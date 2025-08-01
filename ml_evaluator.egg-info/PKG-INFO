@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: ml-evaluator
+Version: 0.1.0
+Summary: Modular ML evaluator for classification and regression models
+Author: Ruslan Mamedov
+Requires-Dist: scikit-learn
+Requires-Dist: pandas
+Requires-Dist: numpy

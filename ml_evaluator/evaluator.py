@@ -5,6 +5,8 @@ from sklearn.metrics import (
 import numpy as np
 
 def evaluate_classification(y_true, y_pred, y_proba=None, logger=None):
+    if len(y_true) != len(y_pred):
+        raise ValueError("y_true and y_pred must have same length")
     metrics = {
         "accuracy": accuracy_score(y_true, y_pred),
         "precision": precision_score(y_true, y_pred, average="binary"),
@@ -20,8 +22,9 @@ def evaluate_classification(y_true, y_pred, y_proba=None, logger=None):
 
     return metrics
 
-
 def evaluate_regression(y_true, y_pred, logger=None):
+    if len(y_true) != len(y_pred):
+        raise ValueError("y_true and y_pred must have same length")
     metrics = {
         "rmse": np.sqrt(mean_squared_error(y_true, y_pred)),
         "mae": mean_absolute_error(y_true, y_pred),

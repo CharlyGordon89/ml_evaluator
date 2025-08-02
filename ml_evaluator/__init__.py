@@ -1,2 +1,3 @@
-from .evaluator import evaluate_classification, evaluate_regression
-__all__ = ["evaluate_classification", "evaluate_regression"]
+from .evaluator import evaluate_model, evaluate_classification, evaluate_regression
+
+__all__ = ["evaluate_model", "evaluate_classification", "evaluate_regression"]

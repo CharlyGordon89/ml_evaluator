@@ -37,3 +37,20 @@ def evaluate_regression(y_true, y_pred, logger=None):
 
     return metrics
 
+def evaluate_model(model, X, y, task: str = "classification", logger=None):
+    y_pred = model.predict(X)
+    y_proba = None
+
+    if task == "classification" and hasattr(model, "predict_proba"):
+        try:
+            y_proba = model.predict_proba(X)[:, 1]
+        except Exception:
+            pass
+
+        return evaluate_classification(y, y_pred, y_proba, logger=logger)
+
+    elif task == "regression":
+        return evaluate_regression(y, y_pred, logger=logger)
+
+    else:
+        raise ValueError(f"Unsupported task: {task}")

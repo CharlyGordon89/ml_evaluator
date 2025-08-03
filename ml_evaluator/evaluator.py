@@ -94,10 +94,20 @@ def evaluate_classification(
     if "f1" in metrics:
         results["f1"] = f1_score(y_true, y_pred, average=average, zero_division=0)
 
+    
     if "auc" in metrics:
         if y_prob is None:
             raise ValueError("AUC requires probability predictions (y_prob).")
-        results["auc"] = roc_auc_score(y_true, y_prob, multi_class="ovr" if len(set(y_true)) > 2 else "raise")
+
+        # Binary or multiclass handling
+        if y_prob.ndim == 2 and y_prob.shape[1] == 2:
+            y_score = y_prob[:, 1]  # binary
+            results["auc"] = roc_auc_score(y_true, y_score)
+        elif y_prob.ndim == 2 and y_prob.shape[1] > 2:
+            results["auc"] = roc_auc_score(y_true, y_prob, multi_class="ovr")
+        else:
+            results["auc"] = roc_auc_score(y_true, y_prob)
+
 
     if "confusion_matrix" in metrics:
         results["confusion_matrix"] = confusion_matrix(y_true, y_pred).tolist()
